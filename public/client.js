@@ -112,6 +112,28 @@ function signPressed() {
   }
 }
 
+function expoPressed() {
+  // unary exponential: compute e^(current value)
+  var current = getValue();
+  var n = Number(current);
+
+  if (isNaN(n)) {
+    setError();
+    return;
+  }
+
+  setLoading(true);
+  try {
+    var result = Math.exp(n);
+    setValue(result);
+    state = states.complete;
+  } catch (e) {
+    setError();
+  } finally {
+    setLoading(false);
+  }
+}
+
 function operationPressed(op) {
   operand1 = getValue();
   operation = op;
