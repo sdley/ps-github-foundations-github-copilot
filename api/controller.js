@@ -27,7 +27,7 @@ exports.calculate = function (req, res) {
       return Math.pow(a, b);
     },
     // natural logarithm (ln) - uses only operand1
-    ln: function (a, b) {
+    ln: function (a) {
       return Math.log(Number(a));
     },
   };
