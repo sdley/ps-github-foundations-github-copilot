@@ -35,6 +35,9 @@ function calculate(operand1, operand2, operation) {
     case "^":
       uri += "?operation=power";
       break;
+    case "ln":
+      uri += "?operation=ln";
+      break;
     default:
       setError();
       return;
@@ -113,8 +116,17 @@ function signPressed() {
 }
 
 function operationPressed(op) {
+  // store operand1
   operand1 = getValue();
   operation = op;
+
+  // ln is a unary operator (natural log) — compute immediately using operand1
+  if (op === "ln") {
+    state = states.complete;
+    calculate(operand1, 0, operation);
+    return;
+  }
+
   state = states.operator;
 }
 

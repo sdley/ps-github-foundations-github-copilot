@@ -26,6 +26,10 @@ exports.calculate = function (req, res) {
     power: function (a, b) {
       return Math.pow(a, b);
     },
+    // natural logarithm (ln) - uses only operand1
+    ln: function (a) {
+      return Math.log(Number(a));
+    },
   };
 
   if (!req.query.operation) {
@@ -46,12 +50,15 @@ exports.calculate = function (req, res) {
     throw new Error("Invalid operand1: " + req.query.operand1);
   }
 
-  if (
-    !req.query.operand2 ||
-    !req.query.operand2.match(/^(-)?[0-9\.]+(e(-)?[0-9]+)?$/) ||
-    req.query.operand2.replace(/[-0-9e]/g, "").length > 1
-  ) {
-    throw new Error("Invalid operand2: " + req.query.operand2);
+  // For unary ops like ln we don't require operand2; for others we do
+  if (req.query.operation !== "ln") {
+    if (
+      !req.query.operand2 ||
+      !req.query.operand2.match(/^(-)?[0-9\.]+(e(-)?[0-9]+)?$/) ||
+      req.query.operand2.replace(/[-0-9e]/g, "").length > 1
+    ) {
+      throw new Error("Invalid operand2: " + req.query.operand2);
+    }
   }
 
   res.json({ result: operation(req.query.operand1, req.query.operand2) });
